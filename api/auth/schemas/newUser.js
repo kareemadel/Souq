@@ -2,8 +2,7 @@
 
 const Joi = require('joi');
 
-module.exports =
-{
+const passwordSignUpSchema = {
   body: Joi.object()
     .keys(
       {
@@ -14,4 +13,9 @@ module.exports =
       }
     )
     .required()
+};
+
+
+module.exports = {
+  passwordSignUpSchema
 };
