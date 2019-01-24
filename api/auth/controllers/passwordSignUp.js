@@ -15,7 +15,7 @@ const signUpBuyer = async (req, res, next) =>
   const { body, body: { password } } = req;
   body.hash = await createHash(password);
   try {
-    const newUser = _.pick(await addBuyer(body), ['email', 'role']);
+    const newUser = _.pick(await addBuyer(body), ['_id', 'role']);
     const token = generateJWT(newUser);
     newUser.token = token;
     res.send({
@@ -32,7 +32,7 @@ const signUpSeller = async (req, res, next) =>
   const { body, body: { password } } = req;
   body.hash = await createHash(password);
   try {
-    const newUser = _.pick(await addSeller(body), ['email', 'role']);
+    const newUser = _.pick(await addSeller(body), ['_id', 'role']);
     const token = generateJWT(newUser);
     newUser.token = token;
     res.send({

@@ -29,7 +29,7 @@ const afterAuthCallback = (req, res, next) => {
       return next(Boom.badImplementation('', err));
     }
     if (passportUser) {
-      const user = _.pick(passportUser, ['email', 'role']);
+      const user = _.pick(passportUser, ['_id', 'role']);
       const token = generateJWT(user);
       user.token = token;
       return res.send({ user, name: passportUser.name });
