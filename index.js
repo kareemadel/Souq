@@ -21,7 +21,9 @@ mongoose.connect(DB_URI, DB_OPTIONS);
 
 // mount supApps
 const auth = require(join(__dirname, 'api', 'auth'));
+const category = require(join(__dirname, 'api', 'category'));
 app.use('/auth', auth);
+app.use('/category', category);
 
 // express errors
 app.use(function (err, req, res, next) {
