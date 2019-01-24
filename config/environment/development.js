@@ -10,5 +10,9 @@ module.exports = {
     dbName: process.env.DB_NAME || 'souq'
   },
   jwtSecret: process.env.JWT_SECRET || '(&*HU&Thjh86t78u978ygt&%',
-  saltRounds: process.env.SALT_ROUNDS || 10
+  saltRounds: process.env.SALT_ROUNDS || 10,
+  EXPRESS_APP_OPTIONS: {
+    'query parser': 'simple',
+    'env': 'development'
+  }
 };

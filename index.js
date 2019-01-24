@@ -9,10 +9,14 @@ const _ = require('lodash');
 const {
   DB_URI,
   DB_OPTIONS,
-  PORT
+  PORT,
+  EXPRESS_APP_OPTIONS
 } = require(join(__dirname, 'config'));
 
 const app = express();
+for (let key in EXPRESS_APP_OPTIONS) {
+  app.set(key, EXPRESS_APP_OPTIONS[key]);
+}
 mongoose.connect(DB_URI, DB_OPTIONS);
 
 // mount supApps

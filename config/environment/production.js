@@ -10,6 +10,11 @@ module.exports = {
     dbName: process.env.DB_NAME
   },
   jwtSecret: process.env.JWT_SECRET,
-  saltRounds: process.env.SALT_ROUNDS
+  saltRounds: process.env.SALT_ROUNDS,
+  EXPRESS_APP_OPTIONS: {
+    'query parser': 'simple',
+    'x-powered-by': false,
+    'env': 'production'
+  }
 };
 
