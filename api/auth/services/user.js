@@ -13,8 +13,7 @@ const addSeller = async ({ name, email, hash, address }) =>
       email,
       hash,
       address,
-      role: 'seller',
-      products: {}
+      role: 'seller'
     });
     return newUser.toObject();
   } catch(error) {
@@ -30,10 +29,7 @@ const addBuyer = async ({ name, email, hash, address }) =>
       email,
       hash,
       address,
-      role: 'buyer',
-      cart: {},
-      ratedProducts: {},
-      commentedProducts:{}
+      role: 'buyer'
     });
     return newUser.toObject();
   } catch(error) {
