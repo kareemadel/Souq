@@ -28,11 +28,27 @@ const fetchSubcategories = async (categoryName) => {
 const createCategory = async (categoryName) => {
   try {
     const newCategory = await Category.create({
-      name: categoryName.toLowerCase()
+      name: categoryName,
+      indexName: categoryName
     });
     return newCategory.toObject();
   } catch (error) {
-    throw Boom.conflict('Duplicate Category.');
+    throw Boom.conflict('Duplicate Category.', error);
+  }
+};
+
+const createBatchCategory = async (categories) => {
+  categories.forEach(o => {
+    o.indexName = o.name;
+  });
+  try {
+    const newCategories = await Category.insertMany(categories, {
+      ordered: false
+    });
+    return newCategories;
+  } catch (error) {
+    console.log(error);
+    throw Boom.conflict('Duplicate Categories.', error);
   }
 };
 
@@ -61,5 +77,6 @@ module.exports = {
   fetchCategories,
   fetchSubcategories,
   createCategory,
-  createSubcategory
+  createSubcategory,
+  createBatchCategory
 };

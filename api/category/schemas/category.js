@@ -12,6 +12,26 @@ const addCategorySchema = {
     .required()
 };
 
+const addBatchCategoriesSchema = {
+  body: Joi.object()
+    .keys(
+      {
+        categories: Joi.array()
+          .items(
+            Joi.object()
+              .keys(
+                {
+                  name: Joi.string().required(),
+                  subCategories: Joi.array().items(Joi.string())
+                }
+              )
+          )
+          .required()
+      }
+    )
+    .required()
+};
+
 const addSubcategorySchema = {
   body: Joi.object()
     .keys(
@@ -36,5 +56,6 @@ const getSubcategorySchema = {
 module.exports = {
   addCategorySchema,
   getSubcategorySchema,
-  addSubcategorySchema
+  addSubcategorySchema,
+  addBatchCategoriesSchema
 };

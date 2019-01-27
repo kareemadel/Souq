@@ -6,7 +6,8 @@ const {
   fetchCategories,
   fetchSubcategories,
   createCategory,
-  createSubcategory
+  createSubcategory,
+  createBatchCategory
 } = require(join(__dirname, '..', 'services', 'category.js'));
 
 const getCategories = async (req, res, next) => {
@@ -49,9 +50,20 @@ const addSubcategory = async (req, res, next) => {
   }
 };
 
+const addBatchCategories = async (req, res, next) => {
+  try {
+    const { categories } = req.body;
+    const newCategories = await createBatchCategory(categories);
+    res.send(newCategories);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getCategories,
   getSubcategories,
   addCategory,
-  addSubcategory
+  addSubcategory,
+  addBatchCategories
 };
