@@ -7,14 +7,19 @@ const categorySchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      index: 'hashed',
-      unique: true
+    },
+    indexName : {
+      type: String,
+      index: true,
+      unique: true,
+      set: (v) => v.toLowerCase()
     },
     subCategories: [String]
   }
 );
 
 const Category = mongoose.model('Category', categorySchema);
+Category.createIndexes();
 
 module.exports = {
   Category

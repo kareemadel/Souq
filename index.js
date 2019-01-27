@@ -31,7 +31,8 @@ app.use(function (err, req, res, next) {
   if (err.data) {
     resBody.data = _.get(err, 'data');
   }
-  res.status(_.get(err, 'output.statusCode'))
+  const status = _.get(err, 'output.statusCode', 500);
+  res.status(status)
     .send(resBody);
 });
 

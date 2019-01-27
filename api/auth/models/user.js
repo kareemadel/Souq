@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      index: 'hashed',
+      index: true,
       unique: true,
       validate: {
         validator: (email) => /(.+)@(.+){2,}\.(.+){2,}/.test(email)
@@ -80,6 +80,7 @@ const userSchema = new mongoose.Schema(
 );
 
 const User = mongoose.model('User', userSchema);
+User.createIndexes();
 
 module.exports = {
   User

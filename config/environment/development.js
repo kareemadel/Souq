@@ -7,6 +7,7 @@ module.exports = {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
+    autoIndex: false,
     dbName: process.env.DB_NAME || 'souq'
   },
   jwtSecret: process.env.JWT_SECRET || '(&*HU&Thjh86t78u978ygt&%',
