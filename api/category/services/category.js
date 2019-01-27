@@ -5,24 +5,32 @@ const Boom = require('boom');
 
 const { Category } = require(join(__dirname, '..', 'models', 'category'));
 
+let categories = null;
+let isOutdated = true;
+
 
 const fetchCategories = async (skip, limit) => {
+  skip = skip ? skip : 0;
+  limit = limit ? limit : 0;
+  if (!isOutdated) {
+    return [...categories(skip, skip+limit+1)];
+  }
   try {
-    return await Category.find({})
-      .skip(skip)
-      .limit(limit)
-      .exec();
+    categories = await Category.find({}).exec();
+    return [...categories(skip, skip+limit+1)];
   } catch (error) {
     throw Boom.badImplementation('', error);
   }
 };
 
 const fetchSubcategories = async (categoryName) => {
-  try {
-    return await Category.findOne({ name: categoryName }).exec();
-  } catch (error) {
-    throw Boom.badImplementation('', error);
+  if(isOutdated) {
+    await fetchCategories();
   }
+  if (!categories[categoryName]) {
+    throw Boom.notFound('There is no such category');
+  }
+  return [...categories[categoryName].subCategories];
 };
 
 const createCategory = async (categoryName) => {
@@ -34,6 +42,8 @@ const createCategory = async (categoryName) => {
     return newCategory.toObject();
   } catch (error) {
     throw Boom.conflict('Duplicate Category.', error);
+  } finally {
+    isOutdated = true;
   }
 };
 
@@ -47,8 +57,9 @@ const createBatchCategory = async (categories) => {
     });
     return newCategories;
   } catch (error) {
-    console.log(error);
     throw Boom.conflict('Duplicate Categories.', error);
+  } finally {
+    isOutdated = true;
   }
 };
 
@@ -70,7 +81,27 @@ const createSubcategory = async (subcategoryName, categoryName) => {
     ).exec();
   } catch (error) {
     throw Boom.badImplementation('', error);
+  } finally {
+    isOutdated = true;
   }
+};
+
+const isCategory = async (categoryName) => {
+  const categories = await fetchCategories();
+  if (categories.indexOf(categoryName) === -1) {
+    return false;
+  }
+  return true;
+};
+
+const isSubcategory = async (subcategoryName) => {
+  const categories = await fetchCategories();
+  for (let c of categories) {
+    if (c.subCategories.indexOf(subcategoryName) !== -1) {
+      return true;
+    }
+  }
+  return false;
 };
 
 module.exports = {
@@ -78,5 +109,7 @@ module.exports = {
   fetchSubcategories,
   createCategory,
   createSubcategory,
-  createBatchCategory
+  createBatchCategory,
+  isCategory,
+  isSubcategory
 };
